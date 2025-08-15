@@ -10,8 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Immutable record for User data. 
- * Recommend use of builder pattern, i.e. UserBuilder.builder()
+ * Immutable record for User data. Recommend use of builder pattern, i.e. UserBuilder.builder()
  */
 @RecordBuilder
 public record User(
