@@ -50,4 +50,21 @@ class UserRepositoryTest {
     assertThat(user).isPresent();
     assertThat(user.get().getAddress()).isEqualTo("Street 1");
   }
+
+   /**
+    * This test should fail IF hibernate validation
+    * OR liquibase changelog was used in context
+    * as the name is null.
+    */
+  @Test
+  void testSaveEmtpyName() {
+    UserEntity user = new UserEntity();
+    user.setAddress("S1333");
+    user.setBirthDate(LocalDate.of(2024, 01, 01));
+    UserEntity userEntity = userRepository.save(user);
+    assertThat(userEntity).isNotNull();
+    assertThat(user.getId()).isNotNull();
+  }
+
+
 }
