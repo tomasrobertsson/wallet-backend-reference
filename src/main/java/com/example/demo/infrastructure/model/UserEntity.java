@@ -8,23 +8,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class UserEntity {
   @Id
   @GeneratedValue
   private UUID id;
-  @NotBlank
   private String address;
 
-  @NotBlank(message = "Name cannot be blank")
-  private String name;
   @NotNull
+  private String name;
   private LocalDate birthDate;
 
   public UserEntity() {}
@@ -69,4 +66,11 @@ public class UserEntity {
   public void setBirthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
   }
+
+  @Override
+  public String toString() {
+    return "UserEntity [id=" + id + ", address=" + address + ", name=" + name + ", birthDate="
+        + birthDate + "]";
+  }
+
 }

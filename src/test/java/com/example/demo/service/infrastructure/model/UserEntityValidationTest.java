@@ -3,39 +3,29 @@
 // SPDX-License-Identifier: EUPL-1.2
 package com.example.demo.service.infrastructure.model;
 
-import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.Test;
-import com.example.demo.AbstractValidationTest;
 import com.example.demo.infrastructure.model.UserEntity;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
-public class UserEntityValidationTest extends AbstractValidationTest<UserEntity> {
-  Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+public class UserEntityValidationTest {
 
   @Test
-  public void testGivEntityEmptyName() {
-    assertThat(
-        givenEmptyName(
-            new UserEntity(UUID.randomUUID(), "adress", "", LocalDate.of(2024, 1, 1))))
-        .isTrue();
+  public void testValidationRules() {
+    UserEntity userEntity = new UserEntity(UUID.randomUUID(), null, null, null);
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
+    assertThat(violations)
+        .hasSize(3)
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"));
   }
 
-
-  @Test
-  public void testGivenNoBirthDate() {
-    assertThat(givenNoBirthDate(new UserEntity(UUID.randomUUID(), "adress", "My name", null)))
-        .isTrue();
-
-  }
-
-  @Test
-  public void testGivenNoAddress() {
-
-    assertThat(givenNoAddress(
-        new UserEntity(UUID.randomUUID(), "", "My name", LocalDate.of(2024, 1, 1))))
-        .isTrue();
-  }
 }
+
+

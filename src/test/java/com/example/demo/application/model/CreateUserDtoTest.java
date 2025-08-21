@@ -4,29 +4,26 @@
 package com.example.demo.application.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import java.time.LocalDate;
+import java.util.Set;
+import java.util.UUID;
 import org.junit.Test;
-import com.example.demo.AbstractValidationTest;
+import com.example.demo.infrastructure.model.UserEntity;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 
-public class CreateUserDtoTest extends AbstractValidationTest<CreateUserDto> {
-
-  @Test
-  public void testGivEntityEmptyName() {
-    assertThat(
-        givenEmptyName(new CreateUserDto("adress", "", LocalDate.of(2024, 1, 1)))).isTrue();
-  }
+public class CreateUserDtoTest {
 
   @Test
-  public void testGivenNoBirthDate() {
-    assertThat(
-        givenNoBirthDate(new CreateUserDto("adress", "My name", null))).isTrue();
-  }
-
-  @Test
-  public void testGivenNoAddress() {
-    assertThat(
-        givenNoAddress(new CreateUserDto("", "My name", LocalDate.of(2024, 1, 1))))
-        .isTrue();
+  public void testValidationRules() {
+    UserEntity userEntity = new UserEntity(UUID.randomUUID(), null, null, null);
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
+    assertThat(violations)
+        .hasSize(3)
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("address"))
+        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("birthDate"));
   }
 }

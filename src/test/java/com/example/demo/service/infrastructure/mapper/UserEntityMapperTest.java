@@ -25,6 +25,7 @@ class UserEntityMapperTest {
         .birthDate(LocalDate.of(2024, 1, 1))
         .id(UUID.randomUUID())
         .build();
-    assertThat(UserEntityMapper.toDomain(UserEntityMapper.toEntity(defaultUser))).isEqualTo(defaultUser);
+    assertThat(UserEntityMapper.toDomain(UserEntityMapper.toEntity(defaultUser)))
+        .isEqualTo(defaultUser);
   }
 }

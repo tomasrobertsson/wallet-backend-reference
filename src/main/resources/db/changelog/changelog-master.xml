@@ -16,7 +16,7 @@ SPDX-License-Identifier: CC0-1.0
         http://www.liquibase.org/xml/ns/pro
         http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"
 >
-  <changeSet id="1" author="TomasRobertsson">
+  <changeSet id="xml-2" author="TomasRobertsson">
     <createTable tableName="users">
       <column name="id" type="UUID">
         <constraints primaryKey="true" nullable="false" />

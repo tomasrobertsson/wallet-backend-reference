@@ -14,9 +14,9 @@ public final class UserDtoMapper {
 
   public static UserDto toDto(User user) {
     return UserDtoBuilder.builder()
-      .address(user.address())
-      .name(user.address())
-      .birthDate(user.birthDate())
-      .build();
+        .address(user.address())
+        .name(user.address())
+        .birthDate(user.birthDate())
+        .build();
   }
 }
