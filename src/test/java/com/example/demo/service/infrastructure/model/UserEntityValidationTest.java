@@ -4,6 +4,7 @@
 package com.example.demo.service.infrastructure.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.Test;
@@ -15,15 +16,24 @@ import jakarta.validation.Validator;
 public class UserEntityValidationTest {
 
   @Test
-  public void testValidationRules() {
+  public void testValidationOK() {
+    UserEntity userEntity =
+        new UserEntity(UUID.randomUUID(), "an address", "my name", LocalDate.of(2024, 1, 1));
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
+    assertThat(violations).isEmpty();
+  }
+
+
+  @Test
+  public void testValidationError() {
     UserEntity userEntity = new UserEntity(UUID.randomUUID(), null, null, null);
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
     assertThat(violations)
-        .hasSize(3)
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"));
+        .hasSize(1)
+        .allSatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
+        .allSatisfy(v -> assertThat(v.getMessage()).contains("null"));
   }
 
 }

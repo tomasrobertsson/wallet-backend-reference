@@ -65,12 +65,8 @@ class UserRepositoryTest {
     user.setBirthDate(LocalDate.of(2024, 01, 01));
     UUID userID = userRepository.save(user).getId();
 
-    // with constrain in Entity level
     assertThrows(jakarta.validation.ConstraintViolationException.class,
         () -> entityManager.flush());
-    // with constrain only in DB-layer
-    // assertThrows(org.hibernate.exception.ConstraintViolationException.class, () ->
-    // entityManager.flush());
     entityManager.clear();
     UserEntity user2 = entityManager.find(UserEntity.class, userID);
     assertThat(user2).isNull();

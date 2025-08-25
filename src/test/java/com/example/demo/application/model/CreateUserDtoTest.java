@@ -4,10 +4,9 @@
 package com.example.demo.application.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import java.time.LocalDate;
 import java.util.Set;
-import java.util.UUID;
 import org.junit.Test;
-import com.example.demo.infrastructure.model.UserEntity;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -16,14 +15,32 @@ import jakarta.validation.Validator;
 public class CreateUserDtoTest {
 
   @Test
-  public void testValidationRules() {
-    UserEntity userEntity = new UserEntity(UUID.randomUUID(), null, null, null);
+  public void testValidationOK() {
+    CreateUserDto user = new CreateUserDto("an address", "my name", LocalDate.of(2024, 1, 1));
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    Set<ConstraintViolation<UserEntity>> violations = validator.validate(userEntity);
+    Set<ConstraintViolation<CreateUserDto>> violations = validator.validate(user);
+    assertThat(violations).isEmpty();
+  }
+
+  @Test
+  public void testValidationErrors() {
+    CreateUserDto user = new CreateUserDto(null, null, null);
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Set<ConstraintViolation<CreateUserDto>> violations = validator.validate(user);
     assertThat(violations)
-        .hasSize(3)
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("name"))
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("address"))
-        .anySatisfy(v -> assertThat(v.getPropertyPath()).hasToString("birthDate"));
+        .anySatisfy(v -> {
+          assertThat(v.getPropertyPath()).hasToString("name");
+          assertThat(v.getMessage()).contains("blank");
+        })
+
+        .anySatisfy(v -> {
+          assertThat(v.getPropertyPath()).hasToString("address");
+          assertThat(v.getMessage()).contains("blank");
+        })
+        .anySatisfy(v -> {
+          assertThat(v.getPropertyPath()).hasToString("birthDate");
+          assertThat(v.getMessage()).contains("null");
+        })
+        .hasSize(3);
   }
 }

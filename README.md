@@ -7,5 +7,5 @@ This repository might or might not be updated once we have our first few service
 
 ## Code standard/decision
     * Records are to be used for data class definition as they are inherently immutable
-    * Recordbuilder should always be applied and be the recommended, but not mandatory method, for instantiating records.
+    * RecordBuilder should always be applied and be the recommended, but not mandatory method, for instantiating records.
     * Migration between DTOs should be done in mapper functions.
