@@ -4,12 +4,12 @@
 
 package com.example.demo.application.model;
 
+import io.soabase.recordbuilder.core.RecordBuilder;
 import java.time.LocalDate;
 
-// TODO validate?
+@RecordBuilder
 public record UserDto(
     String address,
     String name,
     LocalDate birthDate) {
-
 }

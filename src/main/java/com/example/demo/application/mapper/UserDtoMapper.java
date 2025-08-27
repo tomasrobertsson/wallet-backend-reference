@@ -5,6 +5,7 @@
 package com.example.demo.application.mapper;
 
 import com.example.demo.application.model.UserDto;
+import com.example.demo.application.model.UserDtoBuilder;
 import com.example.demo.domain.model.User;
 
 public final class UserDtoMapper {
@@ -12,6 +13,10 @@ public final class UserDtoMapper {
   private UserDtoMapper() {}
 
   public static UserDto toDto(User user) {
-    return new UserDto(user.address(), user.name(), user.birthDate());
+    return UserDtoBuilder.builder()
+        .address(user.address())
+        .name(user.address())
+        .birthDate(user.birthDate())
+        .build();
   }
 }

@@ -6,12 +6,17 @@ package com.example.demo.application.mapper;
 
 import com.example.demo.application.model.CreateUserDto;
 import com.example.demo.domain.model.User;
+import com.example.demo.domain.model.UserBuilder;
 
 public final class CreateUserDtoMapper {
 
   private CreateUserDtoMapper() {}
 
   public static User toDomain(CreateUserDto dto) {
-    return new User(null, dto.address(), dto.name(), dto.birthDate());
+    return UserBuilder.builder()
+        .address(dto.address())
+        .name(dto.name())
+        .birthDate(dto.birthDate())
+        .build();
   }
 }

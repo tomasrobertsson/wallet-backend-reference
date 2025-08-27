@@ -8,18 +8,32 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class UserEntity {
   @Id
   @GeneratedValue
   private UUID id;
   private String address;
+
+  @NotNull
   private String name;
   private LocalDate birthDate;
+
+  public UserEntity() {}
+
+  public UserEntity(UUID id, String address,
+      String name,
+      LocalDate birthDate) {
+    this.id = id;
+    this.address = address;
+    this.name = name;
+    this.birthDate = birthDate;
+  }
 
   public UUID getId() {
     return id;
@@ -52,4 +66,11 @@ public class UserEntity {
   public void setBirthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
   }
+
+  @Override
+  public String toString() {
+    return "UserEntity [id=" + id + ", address=" + address + ", name=" + name + ", birthDate="
+        + birthDate + "]";
+  }
+
 }
